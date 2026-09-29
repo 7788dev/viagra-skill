@@ -1,122 +1,167 @@
-<div align="center">
+<p align="center">
+  <img src="assets/lion.svg" width="144" height="144" alt="viagra 狮子图标" />
+</p>
 
-# viagra 💊
+<h1 align="center">viagra</h1>
 
-**AI 伟哥 · 项目记忆园丁**
+<p align="center">伟哥 · 为 AI 编码助手维护可持续的项目记忆。</p>
 
-*专治 AI 接手项目时的"疲软"——看不懂项目、忘记决策、重复踩坑。让任何 AI 会话接手你的项目时,成本趋近于零。*
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-2563eb" alt="License: MIT" /></a>
+  <a href="https://agentskills.io"><img src="https://img.shields.io/badge/Format-Agent%20Skills-7c3eae" alt="Format: Agent Skills" /></a>
+  <a href="viagra/SKILL.md"><img src="https://img.shields.io/badge/Skills-1-15803d" alt="Available skills: 1" /></a>
+</p>
 
-![License](https://img.shields.io/badge/license-MIT-blue)
-![Type](https://img.shields.io/badge/type-Agent_Skill-8A2BE2)
-![Scope](https://img.shields.io/badge/memory-local_&_private-success)
+<p align="center">
+  <a href="#功能">功能</a> · <a href="#安装">安装</a> · <a href="#使用">使用</a> · <a href="#工作原理">工作原理</a> · <a href="#贡献">贡献</a>
+</p>
 
-</div>
+`viagra` 是一个采用 [Agent Skills](https://agentskills.io) 格式的技能包。它指导 AI 根据实际仓库生成 `AGENTS.md`，记录技术决策，并把重复执行的流程整理为项目专属 Skill，减少新会话反复了解项目、重复讨论和重复踩坑的成本。
 
----
+## 功能
 
-## 这是什么
+本仓库提供一个 Skill：[viagra](viagra/SKILL.md)。
 
-`viagra`(伟哥)是一个符合 **Agent Skills 规范**(`SKILL.md`)的技能包,适用于 ZCode、Claude Code 等支持该规范的 AI 编码工具。
+| 能力 | 适用场景 | 产出 |
+|---|---|---|
+| 初始化贡献指南 | 项目缺少指南或用户要求初始化记忆 | 标题为 `Repository Guidelines` 的 `AGENTS.md` |
+| 记录技术决策 | 架构、工具或流程出现有取舍的决定 | 问题、决定、备选方案及后果的决策记录 |
+| 提交后自查 | 代理完成 Git 提交或较大开发任务 | 按需更新记忆；没有相关变化时不新增文档 |
+| 整理项目记忆 | 规则重复、内容过期或指南过长 | 去重、归档、链接修复和精简后的指南 |
+| 沉淀工作流 | 同一核心流程已有至少两次成功执行的证据 | 可按需读取的项目工作流 Skill |
 
-安装后,它会按规则在你的项目里**建立并持续养护一套纯本地的 AI 记忆系统**——项目根目录 `AGENTS.md` + `.agents/` 目录——让每一个新开的 AI 会话都能秒懂项目:技术栈、常用命令、历史决策的来龙去脉、踩过的坑。
-
-它的核心理念一句话:**AI 的项目记忆不是一次性写完的文档,而是在开发过程中按规则长出来的花园。** viagra 就是那个园丁——按规则种植、修剪,而不是一次性生成一片很快荒废的文档。
-
-## 解决什么问题
-
-| 没有 viagra 😴 | 有 viagra 💊 |
-|---|---|
-| 每个新 AI 会话都要从头解释项目背景 | 会话开始自带一份 < 100 行的项目"宪法" |
-| 技术决策的"为什么"随聊天记录流失 | 决策记录(含被否决的方案)永久沉淀、可追溯 |
-| 同一个坑反复踩、同类问题反复答 | 坑踩第二次,自动升级为一条规则 |
-| 发布/排障等流程每次从头摸索 | 流程跑第二遍,自动沉淀为可复用工作流 |
-| 上下文文件越写越长,最后没人看 | 100 行硬上限 + 定期归档清理,有进也有出 |
-
-## 核心设计:三层知识模型
-
-按"AI **何时**加载"分层,而不是按内容分类:
-
-| 层 | 位置 | 加载时机 | 装什么 |
-|---|---|---|---|
-| 🏛️ 宪法 | 项目根 `AGENTS.md` | 每次会话必在上下文 | 常设规则,每条 1~3 行 + 理由链接,**硬性 < 100 行** |
-| 📋 决策 | `.agents/notes/` | AI 按需读取 | 为什么这么做、放弃了什么(生命周期:proposed / implemented / rejected / archived) |
-| 🔁 流程 | `.agents/skills/` | 场景匹配时触发 | 项目专属工作流,精确到命令 |
-
-## 它会做什么:四个操作
-
-1. **初始化** — 进入没有记忆系统的项目时,侦查技术栈、目录结构、构建脚本、git log,生成 `AGENTS.md` + `.agents/` 骨架,并邀请你口述补充只存在于你脑子里的隐性约定。
-2. **提交后自查** — 每次 `git commit` 后自动过一遍判断表:拍板了有取舍的技术决策 → 写决策 note;踩了同一个坑 → 升级为规则;同一流程跑了第二遍 → 沉淀为 skill;全部未命中 → 静默继续,不打扰你。
-3. **定期整理** — 你说"整理记忆",或 `AGENTS.md` 超过 100 行时:去重、归档、删除、瘦身、查断链。
-4. **沉淀工作流** — 同一套流程第二次执行时,通过"准入三问"验证后,固化为项目专属 skill。
-
-## 六条原则
-
-1. **One home per fact** — 每个事实只写一处,其他地方放链接。重复 = 漂移 = AI 读到矛盾信息。
-2. **规则配理由** — 每条规则链接到决策记录,不服可以追溯论证。
-3. **记录输家** — 决策强制包含"备选方案 + 为什么输",防止重复争论。
-4. **同步落地** — 决策记录与产生它的代码同一次提交,文档永不漂移。
-5. **有生有死** — 过期内容归档或删除。文档系统的敌人不是"没写",是"只进不出"。
-6. **相对链接** — 跨文件引用全部用相对路径,机械可查、可修复。
+生成的基础指南建议 200–400 words、少于 100 行，覆盖实际适用的项目结构、开发命令、编码风格、测试和提交/PR 约定。后续操作在这份指南上增量维护，保留已有有效指令。
 
 ## 安装
 
+### 使用 Skills CLI
+
+需要本地可用的 Node.js/npm 环境。在目标项目中运行：
+
 ```bash
-# 1. 克隆本仓库
-git clone https://github.com/7788dev/viagra-skill.git
-cd viagra-skill
-
-# 2a. 装到用户级技能目录(所有项目生效)
-cp -r viagra/ ~/.agents/skills/
-
-# 2b. 或装到某个项目里(仅该项目生效)
-cp -r viagra/ /path/to/your/project/.agents/skills/
+npx skills add 7788dev/viagra-skill --skill viagra
 ```
 
-> 支持 Agent Skills 的工具(如 ZCode)会在新会话中自动发现并按需触发它,无需其他配置。
+按提示选择目标编码助手和安装方式。添加 `--global` 可安装到用户级目录。具体支持的助手和选项见 [Skills CLI 文档](https://github.com/vercel-labs/skills#install-a-skill)。
+
+### 从本地源码安装
+
+克隆本仓库后，在仓库根目录运行下面的命令，可安装当前本地版本：
+
+```bash
+git clone https://github.com/7788dev/viagra-skill.git
+cd viagra-skill
+npx skills add . --skill viagra
+```
+
+也可以将完整的 `viagra/` 文件夹复制到宿主工具支持的技能目录。安装路径、重新加载方式及自动发现机制以宿主文档为准。
 
 ## 使用
 
-装好后基本**不需要你做任何事**——它会在该出手的时候自动出手:
+安装后，在项目会话中直接描述任务：
 
-| 场景 | 触发方式 |
-|---|---|
-| 每次 git 提交后 | 自动自查本次提交,命中才写记忆 |
-| 新项目初始化记忆 | 对 AI 说:"伟哥,给这个项目初始化记忆" / "initialize agent memory" |
-| 整理 / 清理记忆 | "伟哥,整理一下 .agents" |
-| 日常开发 | 拍板技术决策、同一个坑第二次踩时,自动触发 |
+**初始化项目记忆**
 
-## 装进项目后会长什么样
-
+```text
+使用 viagra，为当前仓库生成基础 AGENTS.md 并初始化项目记忆。
+保留已有规则，所有命令和约定以仓库实际内容为准。
 ```
+
+**记录已作出的决定**
+
+```text
+使用 viagra，记录刚才确定的技术方案、考虑过的替代方案以及取舍。
+```
+
+**整理已有记忆**
+
+```text
+使用 viagra，整理当前项目的 .agents，合并重复内容并检查相对链接。
+```
+
+**检查最近一次提交**
+
+```text
+使用 viagra，自查最近一次提交是否需要更新项目记忆，只在命中规则时补写。
+```
+
+Skill 被加载后会指导代理在相关时机自查。它不包含 Git hook 或后台服务，不能独立监听外部终端的提交；如果宿主没有自动调用，请显式使用上述提示。
+
+## 工作原理
+
+记忆按用途分为三层，详细规则见 [SKILL.md](viagra/SKILL.md)：
+
+| 位置 | 保存内容 | 读取方式 |
+|---|---|---|
+| `AGENTS.md` | 贡献指南、常设规则与记忆入口 | 宿主支持时自动加载，否则显式读取 |
+| `.agents/notes/` | 决策理由、备选方案与状态 | 通过相对链接按需读取 |
+| `.agents/skills/` | 已验证、可重复执行的项目流程 | 宿主支持时发现，或从指南索引读取 |
+
+下面是项目使用一段时间后可能形成的结构。工作流只在满足条件后创建：
+
+```text
 your-project/
-├── AGENTS.md                    # < 100 行的项目宪法(每次会话自动加载)
+├── AGENTS.md
 └── .agents/
     ├── notes/
     │   ├── README.md
-    │   ├── proposed/            # 未落地的提案
-    │   ├── implemented/         # 已落地的决策(与代码同一次提交)
-    │   │   └── architecture/2026-09-29-choose-pnpm.md
-    │   ├── rejected/            # 被否决的方案(附否决理由)
-    │   └── archived/            # 归档冻结,永不再改
-    └── skills/                  # 项目专属工作流(流程重复第二遍时才生长)
+    │   ├── proposed/
+    │   ├── implemented/
+    │   ├── rejected/
+    │   └── archived/
+    └── skills/
         └── release-checklist/
             └── SKILL.md
 ```
 
-## FAQ
+维护遵循以下规则：
 
-**Q: 会把我的代码上传到任何地方吗?**
-不会。所有记忆都存在你自己的项目目录里,纯本地文件,无任何网络请求。
+- 以仓库事实为依据，不编造命令、覆盖率或提交规范。
+- 同一事实只保留一个主要来源，其他位置用链接引用。
+- 决策记录包含备选方案和取舍，不把普通小改动都写成决策。
+- 尽量随代码更新记录；提交后发现遗漏则补到工作区，不自动改写提交历史。
+- 归档保留历史语义，移动文件时修复入链和出链。
 
-**Q: 和 CLAUDE.md / cursor rules 是什么关系?**
-`AGENTS.md` 是跨工具通用的约定格式。viagra 负责让它保持精简(< 100 行)且有据可查:深层细节下沉到 `.agents/notes/` 按需加载,而不是把所有东西塞进一个巨型上下文文件。
+## 常见问题
 
-**Q: 每次提交都会生成一堆文档吗?**
-不会。判断表命中才写;机械小改、代码本身已自解释的实现细节、还没发生的计划,明确不写。
+**需要运行服务或配置 API Key 吗？**
 
-**Q: 名字为什么叫 viagra?**
-它治的是 AI 接手项目时的"疲软"——看不懂、记不住、起不来势。用了之后,每次会话都能快速进入状态、持续硬朗。名字是玩笑,功能是认真的。
+Skill 本身是一份指令文档，没有独立运行时，也不要求配置专用 API Key。安装工具和编码助手各自的环境要求另计。
+
+**记忆文件存在本地，是否就代表数据不会离开设备？**
+
+产物保存在项目目录中，Skill 本身不提供上传服务。编码助手读取这些文件后的数据处理方式取决于宿主和模型配置；Git 同步也可能将文件推送到远端。不要把密钥或敏感信息写入记忆。
+
+**会覆盖现有 AGENTS.md 吗？**
+
+规则要求先读取已有内容并增量整合。已有有效指令需要保留，清理篇幅时保留必要的导航入口。
+
+**支持所有编码助手吗？**
+
+文件使用 Agent Skills 格式，但安装、调用和 `AGENTS.md` 自动加载能力因宿主而异。本仓库没有完成所有宿主的兼容性测试。
+
+## 仓库结构
+
+```text
+viagra-skill/
+├── viagra/
+│   └── SKILL.md       # 技能入口、操作规则与生成模板
+├── assets/
+│   └── lion.svg       # 仓库狮子图标
+├── README.md
+└── LICENSE
+```
+
+## 贡献
+
+欢迎通过 [Issue](https://github.com/7788dev/viagra-skill/issues) 报告问题，或提交 PR 改进规则与文档。
+
+请描述触发场景、预期行为和实际行为。修改 Skill 时同步检查 README 中的能力说明，并在临时项目中验证相关场景：已有指南不被覆盖、缺失配置不被编造、重复自查不生成重复记录、移动记录后链接仍然有效。不要把真实项目的私密记录提交为示例。
+
+## 参考
+
+仓库组织参考 [Anthropic Skills](https://github.com/anthropics/skills) 与 [Vercel Agent Skills](https://github.com/vercel-labs/agent-skills) 的公开文档。项目独立维护，与上述组织无隶属关系。
 
 ## License
 
-[MIT](LICENSE) © [7788dev](https://github.com/7788dev)
+[MIT](LICENSE) · [7788dev](https://github.com/7788dev)
