@@ -162,6 +162,10 @@ viagra-skill/
 
 仓库组织参考 [Anthropic Skills](https://github.com/anthropics/skills) 与 [Vercel Agent Skills](https://github.com/vercel-labs/agent-skills) 的公开文档。项目独立维护，与上述组织无隶属关系。
 
+## 友情链接
+
+- [LINUX DO](https://linux.do/) · 技术交流社区
+
 ## License
 
 [MIT](LICENSE) · [7788dev](https://github.com/7788dev)
